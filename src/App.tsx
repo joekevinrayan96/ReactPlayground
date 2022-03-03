@@ -1,25 +1,36 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from "react";
+import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
+import "./App.css";
+import { getUsers } from "./features/users/userSlice";
+import { countAction } from "./store/count-slice";
 
 function App() {
+  const dispatch = useDispatch();
+  const { users } = useSelector((state: RootStateOrAny) => state.users);
+  const count = useSelector((state: RootStateOrAny) => state.counter.count);
+
+  useEffect(() => {
+    setTimeout(() => {
+      dispatch(countAction.countReducer());
+    }, 1000);
+
+    // console.log(countAction.countReducer(num));
+  });
+
+  // useEffect(() => {
+  //   dispatch(getUsers());
+  // }, [dispatch]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <p>counter {count}</p>
+      <h1 style={{ textAlign: "center" }}>
+        Welcome to React Redux Toolkit Crash Course
+      </h1>
+
+      {users &&
+        users.map((user: any, i: number) => <h1 key={i}>{user.name}</h1>)}
+    </>
   );
 }
 
